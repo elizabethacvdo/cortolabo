@@ -15,10 +15,10 @@ public class Pelicula {
     private String director;
     private String pais;
     private String clasificacion;
-    private String año;
+    private int año;
     private boolean proyeccion;
 
-    public Pelicula(int id, String nombre, String director, String pais, String clasificacion, String año, boolean proyeccion) {
+    public Pelicula(int id, String nombre, String director, String pais, String clasificacion, int año, boolean proyeccion) {
         this.id = id;
         this.nombre = nombre;
         this.director = director;
@@ -28,7 +28,7 @@ public class Pelicula {
         this.proyeccion = proyeccion;
     }
 
-    public Pelicula(String nombre, String director, String pais, String clasificacion, String año, boolean proyeccion) {
+    public Pelicula(String nombre, String director, String pais, String clasificacion, int año, boolean proyeccion) {
         this.nombre = nombre;
         this.director = director;
         this.pais = pais;
@@ -37,13 +37,20 @@ public class Pelicula {
         this.proyeccion = proyeccion;
     }
 
-    public Pelicula(String director, String pais, String clasificacion, String año, boolean proyeccion) {
+    public Pelicula(String director, String pais, String clasificacion, int año, boolean proyeccion) {
         this.director = director;
         this.pais = pais;
         this.clasificacion = clasificacion;
         this.año = año;
         this.proyeccion = proyeccion;
     }
+
+    public Pelicula(String nombre,boolean proyeccion) {
+        this.nombre=nombre;
+        this.proyeccion = proyeccion;
+    }
+    
+    
 
     public int getId() {
         return id;
@@ -85,11 +92,11 @@ public class Pelicula {
         this.clasificacion = clasificacion;
     }
 
-    public String getAño() {
+    public int getAño() {
         return año;
     }
 
-    public void setAño(String año) {
+    public void setAño(int año) {
         this.año = año;
     }
 

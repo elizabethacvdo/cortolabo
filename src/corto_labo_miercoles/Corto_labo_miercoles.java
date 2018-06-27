@@ -15,7 +15,8 @@ public class Corto_labo_miercoles {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        
+        new AlgoInterfas ().setVisible(true);
     }
     
 }

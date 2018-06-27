@@ -94,6 +94,7 @@ public class AlgoInterfas extends JFrame{
         lblpais.setBounds(10,100, ANCHOC, ALTOC);
         lblclasificacion.setBounds(10,140, ANCHOC, ALTOC);
         lblproyeccion.setBounds(310,140,ANCHOC,ALTOC);
+        lblaño.setBounds(310,60, WIDTH, HEIGHT);
     }
     
     public final void formulario(){
@@ -130,10 +131,10 @@ public class AlgoInterfas extends JFrame{
         nombre.setBounds(140,10,ANCHOC,ALTOC);
         director.setBounds(140,60,ANCHOC,ALTOC);
         pais.setBounds(140,100,ANCHOC,ALTOC);
-        clasificacion.setBounds(140,100,ANCHOC,ALTOC);
-        año.setBounds(140,100,ANCHOC,ALTOC);
-        si.setBounds(140,140,50,ALTOC);
-        no.setBounds(210,140,50,ALTOC);
+        clasificacion.setBounds(140,150,ANCHOC,ALTOC);
+        año.setBounds(400,60,ANCHOC,ALTOC);
+        si.setBounds(400,140,50,ALTOC);
+        no.setBounds(450,140,50,ALTOC);
         
         
         buscar.setBounds(300,10,ANCHOC,ALTOC);
@@ -189,21 +190,21 @@ public class AlgoInterfas extends JFrame{
         insertar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-            DaoPelicula fd = new DaoPelicula();
-            Pelicula f = new Pelicula(nombre.getText(),director.getText(),pais.getText(),clasificacion.getSelectedItem().toString(),año.getText(),true);
-            
-            if(no.isSelected()){
-                f.setProyeccion(false);
-            }
-            if(fd.read(f.getNombre())==null){
-            if(fd.create(f)){
-                JOptionPane.showMessageDialog(null, "filtro registrado con exito");
-                limpiarCampos();
-                llenarTabla();
-            }else{
-                JOptionPane.showMessageDialog(null,"ocurrio un problema al momento de llenar el filtro");
-            }
-            }
+                DaoPelicula fd = new DaoPelicula();
+                Pelicula f = new Pelicula(nombre.getText(),director.getText(),pais.getText(),clasificacion.getSelectedItem().toString(),Integer.parseInt(año.getText()),true);
+
+                if(no.isSelected()){
+                    f.setProyeccion(false);
+                }
+                if(fd.read(f.getNombre())==null){
+                    if(fd.create(f)){
+                        JOptionPane.showMessageDialog(null, "filtro registrado con exito");
+
+                        llenarTabla();
+                    }else{
+                        JOptionPane.showMessageDialog(null,"ocurrio un problema al momento de llenar el filtro");
+                    }
+                }
             
             }
         });
@@ -211,19 +212,18 @@ public class AlgoInterfas extends JFrame{
             @Override
             public void actionPerformed(ActionEvent ae) {
                 DaoPelicula fd =new DaoPelicula();
-                Pelicula f = new Pelicula ();
+                Pelicula f = new Pelicula (nombre.getText(),true);
                 if(no.isSelected()){
-                    f.setExistencia(false);
+                    f.setProyeccion(false);
                 }
-                if(generico.isSelected()){
-                f.setTipo(false);
-            }
-                if(fd.update(f)){
-                    JOptionPane.showMessageDialog(null, "filtro modificado con exito");
-                    limpiarCampos();
-                    llenarTabla();
-                }else{
-                   JOptionPane.showMessageDialog(null,"ocurrio un problema al momento de modificar el filtro"); 
+                if(fd.read(f.getNombre())!=null){
+                    if(fd.update(f)){
+                        JOptionPane.showMessageDialog(null, "filtro modificado con exito");
+                        llenarTabla();
+                    }else{
+                        System.out.println("entor");
+                       JOptionPane.showMessageDialog(null,"ocurrio un problema al momento de modificar el filtro"); 
+                    }
                 }
             }
           
@@ -232,10 +232,10 @@ public class AlgoInterfas extends JFrame{
       eliminar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                FiltroDao fd=new FiltroDao();
-                if(fd.delete(codigo.getText())){
+                DaoPelicula fd=new DaoPelicula();
+                if(fd.delete(nombre.getText())){
                     JOptionPane.showMessageDialog(null,"filtro eliminado con exito");
-                    limpiarCampos();
+                  
                     llenarTabla();
                 }else{
                     JOptionPane.showMessageDialog(null,"ocurrio un problema al momento de eliminar el filtro");
@@ -247,33 +247,43 @@ public class AlgoInterfas extends JFrame{
       buscar.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                FiltroDao fd=new FiltroDao();
-                Filtro  f = fd.read(codigo.getText());
+                DaoPelicula fd=new DaoPelicula();
+                Pelicula  f = fd.read(nombre.getText());
                 if(f==null){
                     JOptionPane.showMessageDialog(null,"el filtro no se ha encontrado");
                    
                 }else{
-                    codigo.setText(f.getCodigo());
-                    marca.setSelectedItem(f.getMarca());
-                    stock.setText(Integer.toString(f.getStock()));
-                    if(f.getExistencia()){
+                    nombre.setText(f.getNombre());
+                    director.setText(f.getDirector());
+                    año.setText(String.valueOf(f.getAño()));
+                    pais.setText(f.getPais());
+                    clasificacion.setSelectedItem(f.getClasificacion());
+                   
+                    
+                    
+                    
+                    if(f.getProyeccion()){
                     si.setSelected(true);
                 }else{
                         no.setSelected(false);
-                    }
-                    if(f.isTipo()){
-                    original.setSelected(true);
-                }else{
-                        generico.setSelected(false);
-                    }
+                    
                 }
             }
-          
+            } 
       });
-    }
-     public void limpiarCampos(){
-       nombre.setText("");
-       pais.setText("");
-   } 
-    
+      
+      }
+    public static void main(String[] args){
+       java.awt.EventQueue.invokeLater(new Runnable() {
+           @Override
+           public void run() {
+               new AlgoInterfas().setVisible(true);           }
+       });{
+       
+   }
+   }
+
 }
+    
+     
+
